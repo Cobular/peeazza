@@ -1,26 +1,24 @@
 <script lang="ts">
 	interface Snippet {
 		// A number between 0 and 1 representing the rating of the question
-		rating: number;
-		content: string;
+		bot_confidence: number;
+		snippet_text: string;
+		full_text: string;
+		post_id: number;
 	}
 
 	let active_question: number | undefined = undefined;
 
-	let questions: Snippet[] = [
-		{
-			rating: 0.5,
-			content: 'How do I use SvelteKit?'
-		},
-		{
-			rating: 0.7,
-			content: 'What is the meaning of life?'
-		},
-		{
-			rating: 0.2,
-			content: 'What is the airspeed velocity of an unladen swallow?'
-		}
-	];
+	let questions: Snippet[] = [];
+
+	async function getQuestions() {
+		const response = await fetch(`http://127.0.0.1:8000/snippets`);
+		const data = await response.json();
+		console.log(data);
+		questions = data;
+	}
+
+	getQuestions();
 </script>
 
 <div class="navbar bg-base-300 rounded-md mb-3">
@@ -36,23 +34,31 @@
 
 <div class="grid grid-cols-[minmax(150px,_2fr)_5fr] gap-3 h-full">
 	<div class="bg-base-200 rounded-md">
-    <div class="h-1 rounded-t-md bg-base-300"></div>
+		<div class="h-1 rounded-t-md bg-base-300" />
 		<table class="table">
 			<thead class="bg-base-300 rounded-t-md">
 				<tr>
 					<th>Question</th>
-					<th class="cursor-pointer">Score</th>
+					<th class="cursor-pointer">Confidence</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each questions as question}
 					<tr class="hover">
 						<td>
-							{question.content}
+							{question.snippet_text}
 						</td>
-						<td class="font-mono">
-							{question.rating}
-						</td>
+						<td
+							><div
+								class="h-2.5 w-2.5 ml-4 rounded-full {question.bot_confidence > 0.8
+									? 'bg-emerald-500'
+									: question.bot_confidence > 0.5
+									? 'bg-yellow-500'
+									: question.bot_confidence > 0.4
+									? 'bg-red-500'
+									: 'bg-green-500'} mr-2"
+							/></td
+						>
 					</tr>
 				{/each}
 			</tbody>
