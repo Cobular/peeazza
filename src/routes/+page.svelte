@@ -32,7 +32,7 @@
 	</div>
 </div>
 
-<div class="grid grid-cols-[minmax(150px,_2fr)_5fr] gap-3 h-full">
+<div class="grid grid-cols-[minmax(200px,_2fr)_5fr] gap-3 h-full">
 	<div class="bg-base-200 rounded-md">
 		<div class="h-1 rounded-t-md bg-base-300" />
 		<table class="table">
@@ -40,6 +40,7 @@
 				<tr>
 					<th>Question</th>
 					<th class="cursor-pointer">Confidence</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,7 +60,15 @@
 									: 'bg-green-500'} mr-2"
 							/></td
 						>
-					</tr>
+						<!-- if the confidence is 1 then show a button -->
+						<td>
+							{#if question.bot_confidence === 1}
+								<button class="btn btn-sm btn-ghost" on:click={() => console.log('Answered')}>
+									Answer
+								</button>
+							{/if}
+						</td></tr
+					>
 				{/each}
 			</tbody>
 		</table>
