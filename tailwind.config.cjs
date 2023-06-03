@@ -8,7 +8,9 @@ const config = {
   theme: {
     extend: {}
   },
-
+  daisyui: {
+    themes: ["light", "dracula", "cupcake"],
+  },
   plugins: [typography, daisyui]
 };
 
