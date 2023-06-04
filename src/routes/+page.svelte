@@ -4,36 +4,53 @@
 		bot_confidence: number;
 		snippet_text: string;
 		full_text: string;
-		post_id: number;
+		post_id: string;
 	}
 
-	let active_question: number | undefined = undefined;
+	interface BotResponse {
+		bot_response: string;
+		bot_response_id: string;
+		post_id: string;
+	}
+
+	let active_question: string | undefined = undefined;
+
+	let active_text: string | undefined = undefined;
 
 	let questions: Snippet[] = [];
+
+	let responses: BotResponse[] = [];
 
 	async function getQuestions() {
 		const response = await fetch(`http://127.0.0.1:8000/snippets`);
 		const data = await response.json();
-		console.log(data);
 		questions = data;
+	}
+
+	async function getResponses(postId: string) {
+		const response = await fetch(`http://127.0.0.1:8000/bot_responses/${postId}`);
+		const data = await response.json();
+		responses = data;
 	}
 
 	getQuestions();
 </script>
 
-<div class="navbar bg-base-300 rounded-md mb-3">
-	<a class="btn btn-ghost text-xl uppercase" href="/">Piazzto</a>
-	<div class="join ml-auto">
-		<select class="select join-item max-w-xs">
-			<option disabled selected>Choose a class</option>
-			<option>Han Solo</option>
-			<option>Greedo</option>
-		</select>
-	</div>
-</div>
 
-<div class="grid grid-cols-[minmax(200px,_2fr)_5fr] gap-3 h-full">
-	<div class="bg-base-200 rounded-md">
+
+<div class="grid grid-cols-3 gap-3 h-full">
+	<div class="navbar bg-base-300 rounded-md col-span-3">
+		<a class="btn btn-ghost text-xl uppercase" href="/">Piazzto</a>
+		<div class="join ml-auto">
+			<select class="select join-item max-w-xs">
+				<option disabled selected>Choose a class</option>
+				<option>Han Solo</option>
+				<option>Greedo</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="bg-base-200 rounded-md h-100 overflow-scroll">
 		<div class="h-1 rounded-t-md bg-base-300" />
 		<table class="table">
 			<thead class="bg-base-300 rounded-t-md">
@@ -57,13 +74,20 @@
 									? 'bg-yellow-500'
 									: question.bot_confidence > 0.4
 									? 'bg-red-500'
-									: 'bg-green-500'} mr-2"
+									: 'bg-red-500'} mr-2"
 							/></td
 						>
 						<!-- if the confidence is 1 then show a button -->
 						<td>
 							{#if question.bot_confidence === 1}
-								<button class="btn btn-sm btn-ghost" on:click={() => console.log('Answered')}>
+								<button
+									class="btn btn-sm btn-ghost"
+									on:click={() => {
+										active_question = question.post_id;
+										active_text = question.full_text;
+										getResponses(active_question);
+									}}
+								>
 									Answer
 								</button>
 							{/if}
@@ -85,5 +109,24 @@
    {/each}
     </div> -->
 	</div>
-	<div class="bg-blue-500" />
+	<div class="bg-base-200 rounded-md p-5 col-span-2 h-100 overflow-scroll">
+		<p class="text-2xl mb-5">Question Text</p>
+		<div class="rounded-lg p-5 bg-base-100">
+			{@html active_text}
+		</div>
+		<div class="divider" />
+		<!-- make a card for each response -->
+		<p class="text-2xl mb-5">Bot Responses</p>
+		{#each responses as response, i}
+			<div class="card bg-base-100 shadow-xl w-100 mb-10">
+				<div class="card-body">
+					<h2 class="card-title">Response {i + 1}</h2>
+					<p>{response.bot_response}</p>
+					<div class="card-actions justify-end">
+						<button class="btn btn-primary">Post</button>
+					</div>
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>
