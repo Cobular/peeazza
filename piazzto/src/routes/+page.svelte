@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { parse } from 'postcss';
 
+	export let data;
+
 	interface Snippet {
 		// A number between 0 and 1 representing the rating of the question
 		bot_confidence: number;
@@ -23,6 +25,8 @@
 
 	let questions: Snippet[] = [];
 
+	questions = data.questions;
+
 	let responses: BotResponse[] = [];
 
 	async function getQuestions() {
@@ -42,8 +46,6 @@
 		const data = await response.json();
 		responses = data;
 	}
-
-	getQuestions();
 </script>
 
 <div class="grid grid-cols-3 gap-3 h-full">

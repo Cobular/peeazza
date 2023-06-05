@@ -17,7 +17,7 @@ Only respond with "Certainly", "Probably", "Unlikely", or "No". Do not answer th
 {{~/user}}
 {{#assistant~}}
 {{gen 'answer' max_tokens=1}}
-{{~/assistant}}""", silent=True, llm=guidance.llms.OpenAI("gpt-3.5-turbo", api_key=creds.api_key))
+{{~/assistant}}""", silent=True, llm=guidance.llms.OpenAI("gpt-3.5-turbo", api_key=creds.apikey))
 
 results = []
 
