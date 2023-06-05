@@ -37,7 +37,7 @@ If appropriate, you can include latex math in your response, delimited by two do
 {{~/user}}
 {{#assistant~}}
 {{gen 'answer' n=3}}
-{{~/assistant}}""", silent=True, llm=guidance.llms.OpenAI("gpt-3.5-turbo", api_key=creds.apikey))
+{{~/assistant}}""", silent=True, llm=guidance.llms.OpenAI("gpt-3.5-turbo", api_key=creds.apikey)
 )
 
 questions = [
