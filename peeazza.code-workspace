@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "api",
+			"name": "API",
+		},
+		{
+			"path": "piazzto",
+			"name": "Frontend"
+		},
+		{
+			"path": ".",
+			"name": "Root"
+		},
+	],
+	"settings": {}
+}
