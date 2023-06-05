@@ -1,3 +1,2 @@
-from api import getSnippets
-
-getSnippets(10,0)
+from bot import getFullText
+print(getFullText("Who has the msartest eyes"))
