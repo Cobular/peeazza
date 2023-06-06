@@ -29,12 +29,6 @@
 
 	let responses: BotResponse[] = [];
 
-	async function getQuestions() {
-		const response = await fetch(`http://127.0.0.1:8000/snippets`);
-		const data = await response.json();
-		questions = data;
-	}
-
 	async function postResponse(bot_response_id: string, post_id: string) {
 		const response = await fetch(`http://127.0.0.1:8000/bot_responses/post/${post_id}/${bot_response_id}`);
 		const data = await response.json();

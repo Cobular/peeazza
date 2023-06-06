@@ -1,15 +1,15 @@
 import piazza_api
 import json
-import creds
 import time
 import openai
 import os
+from .env import EMAIL, PASSWORD
 
 p = piazza_api.Piazza()
 
 # Log in
 
-p.user_login(email=creds.email, password=creds.password)
+p.user_login(email=EMAIL, password=PASSWORD)
 
 # Get all the classes the user is enrolled in
 
