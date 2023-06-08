@@ -9,7 +9,7 @@ import json
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, insert, update
 import sqlalchemy
 import datetime
-
+import os
 
 # setup flask
 
@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 # connect to existing database
-engine = sqlalchemy.create_engine('postgresql://localhost', echo=True)
+engine = sqlalchemy.create_engine(os.environ.get("POSTGRES_URL", "postgresql://localhost"), echo=True)
 conn = engine.connect()
 # create a table with the following columns - id (primary key) and data (json)
 
